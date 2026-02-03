@@ -11,7 +11,7 @@ Performs incremental sync:
     - Sorts projects by their newest image date
 
 Requirements:
-    pip install google-api-python-client requests
+    pip install google-api-python-client requests pillow pillow-heif
 
 Setup:
     1. Create a Google Cloud project at console.cloud.google.com
@@ -45,14 +45,21 @@ Local output structure:
 """
 
 import hashlib
+import io
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 
 import requests
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from PIL import Image
+import pillow_heif
+
+# Register HEIF/HEIC opener with Pillow
+pillow_heif.register_heif_opener()
 
 
 def compute_md5(file_path):
@@ -86,16 +93,22 @@ def file_needs_update(local_path, remote_size, remote_md5):
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 GOOGLE_DRIVE_FOLDER_ID = os.environ.get('GOOGLE_DRIVE_FOLDER_ID')
 
-# Web-compatible image extensions
+# Web-compatible image extensions (output formats)
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
 
 # MIME types for images and their file extensions
+# Includes HEIC which will be converted to JPEG
 IMAGE_MIME_TYPES = {
     'image/jpeg': '.jpg',
     'image/png': '.png',
     'image/gif': '.gif',
-    'image/webp': '.webp'
+    'image/webp': '.webp',
+    'image/heic': '.heic',
+    'image/heif': '.heif',
 }
+
+# MIME types that need conversion to JPEG
+CONVERT_TO_JPEG = {'.heic', '.heif'}
 
 # MIME type for folders
 FOLDER_MIME_TYPE = 'application/vnd.google-apps.folder'
@@ -145,8 +158,11 @@ def list_images(service, folder_id):
     return results.get('files', [])
 
 
-def download_image(file_id, dest_path, api_key):
-    """Download an image from Google Drive to a local path."""
+def download_image(file_id, dest_path, api_key, source_ext=None):
+    """Download an image from Google Drive to a local path.
+
+    If the source is HEIC/HEIF, it will be converted to JPEG.
+    """
     # Use the Drive API download URL with API key
     url = f"https://www.googleapis.com/drive/v3/files/{file_id}?alt=media&key={api_key}"
 
@@ -154,21 +170,60 @@ def download_image(file_id, dest_path, api_key):
 
     if response.status_code == 200:
         dest_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(dest_path, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
-        return True
+
+        # Check if we need to convert HEIC/HEIF to JPEG
+        if source_ext and source_ext.lower() in CONVERT_TO_JPEG:
+            try:
+                # Read the entire response into memory for conversion
+                image_data = response.content
+                img = Image.open(io.BytesIO(image_data))
+                # Convert to RGB (HEIC may have alpha channel)
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    img = img.convert('RGB')
+                # Save as JPEG with good quality
+                img.save(dest_path, 'JPEG', quality=90)
+                return True
+            except Exception as e:
+                print(f"    Failed to convert HEIC: {e}")
+                return False
+        else:
+            # Direct download for web-compatible formats
+            with open(dest_path, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            return True
     else:
         print(f"    Failed to download {file_id}: HTTP {response.status_code}")
         return False
 
 
 def get_file_extension(filename, mime_type):
-    """Get file extension from filename or mime type."""
+    """Get file extension from filename or mime type.
+
+    Returns the output extension (HEIC/HEIF files return .jpg since they're converted).
+    """
     ext = Path(filename).suffix.lower()
+
+    # HEIC/HEIF files will be converted to JPEG
+    if ext in CONVERT_TO_JPEG:
+        return '.jpg'
+
     if ext in IMAGE_EXTENSIONS:
         return ext
+
+    # Check mime type for HEIC/HEIF
+    if mime_type in ('image/heic', 'image/heif'):
+        return '.jpg'
+
     # Fall back to mime type
+    return IMAGE_MIME_TYPES.get(mime_type, '.jpg')
+
+
+def get_source_extension(filename, mime_type):
+    """Get the original source file extension."""
+    ext = Path(filename).suffix.lower()
+    if ext:
+        return ext
     return IMAGE_MIME_TYPES.get(mime_type, '.jpg')
 
 
@@ -264,17 +319,17 @@ def main():
             project_dir = images_dir / category_slug / project_slug
             project_dir.mkdir(parents=True, exist_ok=True)
 
-            # Download images and build local paths with timestamps
-            images_dict = {}
+            # Download images and build local paths
+            image_paths = []
             for idx, img in enumerate(images):
                 file_id = img['id']
                 filename = img['name']
                 mime_type = img.get('mimeType', 'image/jpeg')
                 remote_size = img.get('size')
                 remote_md5 = img.get('md5Checksum')
-                created_time = img.get('createdTime', '1970-01-01T00:00:00.000Z')
 
-                # Generate clean filename (lowercase and slugified)
+                # Get source and output extensions
+                source_ext = get_source_extension(filename, mime_type)
                 ext = get_file_extension(filename, mime_type)
                 # Slugify the filename (without extension)
                 name_without_ext = Path(filename).stem
@@ -288,14 +343,14 @@ def main():
 
                 # Check if file needs to be downloaded/updated
                 if file_needs_update(local_path, remote_size, remote_md5):
-                    print(f"    Downloading: {filename}")
-                    if download_image(file_id, local_path, GOOGLE_API_KEY):
-                        images_dict[web_path] = created_time
+                    print(f"    Downloading: {filename}" + (" (converting to JPEG)" if source_ext in CONVERT_TO_JPEG else ""))
+                    if download_image(file_id, local_path, GOOGLE_API_KEY, source_ext):
+                        image_paths.append(web_path)
                 else:
                     print(f"    Up to date: {filename}")
-                    images_dict[web_path] = created_time
+                    image_paths.append(web_path)
 
-            if not images_dict:
+            if not image_paths:
                 print(f"  Skipping {project_name}: no images downloaded")
                 continue
 
@@ -303,7 +358,6 @@ def main():
             project_date = newest_image_date[:7]  # YYYY-MM
 
             # Find thumbnail: prefer image named "thumbnail", otherwise use newest
-            image_paths = list(images_dict.keys())
             thumbnail_path = image_paths[0]  # Default to newest image
             for path in image_paths:
                 filename = path.split('/')[-1].lower()
@@ -317,13 +371,13 @@ def main():
                 "category": category_slug,
                 "categoryName": category_name,
                 "thumbnail": thumbnail_path,
-                "images": images_dict,
+                "images": image_paths,
                 "description": f"Handcrafted {project_name.lower()} from the {category_name} collection.",
                 "date": project_date
             }
 
             projects.append(project)
-            print(f"  Added: {project_name} ({len(images_dict)} images)")
+            print(f"  Added: {project_name} ({len(image_paths)} images)")
 
     # Sort projects by date (newest first)
     projects.sort(key=lambda p: p["date"], reverse=False)
@@ -354,6 +408,23 @@ def main():
     print(f"\nGenerated {len(projects)} projects")
     print(f"Images synced to: {images_dir}")
     print(f"Saved to: {output_path}")
+
+    # Build the static website
+    print("\nBuilding static website...")
+    result = subprocess.run(
+        ["npm", "run", "build"],
+        cwd=script_dir,
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode == 0:
+        print("Build successful!")
+        print(f"Static files generated in: {script_dir / 'dist'}")
+    else:
+        print("Build failed!")
+        print(result.stderr)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

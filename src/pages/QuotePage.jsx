@@ -25,8 +25,8 @@ export default function QuotePage() {
       {/* Header */}
       <div className="py-16 text-white">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl font-bold drop-shadow-lg mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Request a Quote</h1>
-          <p className="text-white/80 text-lg drop-shadow">Tell us about your project</p>
+          <h1 className="text-5xl font-bold drop-shadow-lg mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Request a Quote For a Project I Won't Do!</h1>
+          <p className="text-white/80 text-lg drop-shadow">Tell me about your project! I'd love to hear about it but these buttons on this page don't work! Send me a text</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export default function QuotePage() {
                 type="submit"
                 className="w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-colors cursor-pointer"
               >
-                Submit Request
+                Submit Request to Nowhere!
               </button>
             </form>
           </div>

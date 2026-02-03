@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import projects from '../data/projects.json';
+import { getImageUrl } from '../utils/imagePath';
 
 export default function CategoryPage() {
   const { type } = useParams();
@@ -38,7 +39,7 @@ export default function CategoryPage() {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={project.thumbnail}
+                    src={getImageUrl(project.thumbnail)}
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

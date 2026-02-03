@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid3X3, Soup, RectangleHorizontal, Armchair, UtensilsCrossed, Shapes, Wrench } from 'lucide-react';
 import projects from '../data/projects.json';
+import { getImageUrl } from '../utils/imagePath';
 
 const categories = [
   { id: 'all', name: 'All Projects', icon: Grid3X3 },
@@ -25,10 +26,10 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative text-white py-32">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-6xl font-bold mb-6 drop-shadow-lg">Handcrafted Woodworking</h1>
+          <h1 className="text-6xl font-bold mb-6 drop-shadow-lg">Handmade Woodworking</h1>
           <p className="text-2xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
-            Each piece tells a story. Explore my collection of custom furniture,
-            home decor, and outdoor projects crafted with passion and precision.
+            A catalogue of nearly all the woodworking projects I've dont. Ranging from wine stoppers to dining room tables,
+            I look to work on interesting and new designs that help me grow my ability
           </p>
         </div>
       </section>
@@ -67,7 +68,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={project.thumbnail}
+                    src={getImageUrl(project.thumbnail)}
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

@@ -5,7 +5,6 @@ export default function AboutPage() {
       <div className="py-16 text-white">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-5xl font-bold drop-shadow-lg mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>About</h1>
-          <p className="text-white/80 text-lg drop-shadow">The story behind Arnold Woodworking</p>
         </div>
       </div>
 
@@ -13,25 +12,26 @@ export default function AboutPage() {
       <div className="pb-16">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-black/30 backdrop-blur-sm rounded-xl p-8 border border-white/10">
-            <h2 className="text-2xl font-bold text-white mb-4">Our Craft</h2>
+            <h2 className="text-2xl font-bold text-white mb-4"></h2>
             <p className="text-white/80 leading-relaxed mb-6">
-              Arnold Woodworking is dedicated to creating beautiful, handcrafted pieces that stand the test of time.
-              Each project is approached with meticulous attention to detail and a deep respect for the natural
-              beauty of wood.
+              Arnold Woodworking is a hobby project operated by Connor Arnold. Connor is a professionally a Computer Engineer
+              and an amateur woodworking on the side. All pieces displayed on the site are entirely designed and created by
+              Connor.
+
             </p>
 
-            <h2 className="text-2xl font-bold text-white mb-4">Our Philosophy</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">About the Site</h2>
             <p className="text-white/80 leading-relaxed mb-6">
-              We believe that furniture should be more than functional—it should tell a story. From selecting
-              the perfect piece of lumber to applying the final finish, every step in our process is guided by
-              a commitment to quality and craftsmanship.
+              This website was written almost entirely by Claude Code as a test run of it's capabilities.
             </p>
 
-            <h2 className="text-2xl font-bold text-white mb-4">Experience</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Future Work</h2>
             <p className="text-white/80 leading-relaxed">
-              With years of experience in woodworking, we specialize in custom furniture, home decor, and
-              outdoor projects. Whether you're looking for a statement dining table, a unique gift, or
-              functional outdoor furniture, we bring your vision to life with skill and passion.
+              As new projects come in and are made I'll be updating this site. At the time of writing this (2/2/2026) the submit
+              a quote page is entirely decorative and I have no plans to take commissions through this site. If I ever have my
+              own shop and have more time to take on commissions I'll make it functional. For the time being, you probably know/met
+              me so reach out if you have a project you'd like me to take on and I'll probably say that I have a large backlog
+              (Which is not a lie) but if the project is interesting enough (or you pay me enough) I may take it on.
             </p>
           </div>
         </div>

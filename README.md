@@ -1,5 +1,6 @@
 # Arnold Woodworking Portfolio
 
+
 A modern, responsive portfolio website showcasing handcrafted woodworking projects. Built with React 18, Vite, and Tailwind CSS v4.
 
 ## Tech Stack

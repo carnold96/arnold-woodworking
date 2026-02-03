@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight, Calendar, Tag } from 'lucide-react';
 import projects from '../data/projects.json';
+import { getImageUrl } from '../utils/imagePath';
 
 export default function ProjectPage() {
   const { id } = useParams();
   const project = projects.find(p => p.id === id);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Get image paths from the images dictionary
-  const imagePaths = project ? Object.keys(project.images) : [];
+  const imagePaths = project ? project.images : [];
 
   if (!project) {
     return (
@@ -59,7 +59,7 @@ export default function ProjectPage() {
             <div className="space-y-4">
               <div className="relative aspect-[4/3] bg-black/20 rounded-xl overflow-hidden border border-white/10">
                 <img
-                  src={project.images[currentImageIndex]}
+                  src={getImageUrl(project.images[currentImageIndex])}
                   alt={`${project.title} - Image ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                 />
@@ -99,7 +99,7 @@ export default function ProjectPage() {
                       }`}
                     >
                       <img
-                        src={image}
+                        src={getImageUrl(image)}
                         alt={`Thumbnail ${index + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -153,7 +153,7 @@ export default function ProjectPage() {
                         >
                           <div className="aspect-[4/3] rounded-lg overflow-hidden mb-2 border border-white/10">
                             <img
-                              src={relatedProject.thumbnail}
+                              src={getImageUrl(relatedProject.thumbnail)}
                               alt={relatedProject.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
