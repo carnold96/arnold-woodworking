@@ -28,8 +28,8 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-6xl font-bold mb-6 drop-shadow-lg">Handmade Woodworking</h1>
           <p className="text-2xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
-            A catalogue of nearly all the woodworking projects I've dont. Ranging from wine stoppers to dining room tables,
-            I look to work on interesting and new designs that help me grow my ability
+            A catalogue of nearly all the woodworking projects I've done. Ranging from wine stoppers to dining room tables,
+            I look to work on interesting and new designs that help me grow my ability.
           </p>
         </div>
       </section>

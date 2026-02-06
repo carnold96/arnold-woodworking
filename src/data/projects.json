@@ -465,14 +465,14 @@
     "title": "Walnut and Maple Z Salad Bowls",
     "category": "bowls",
     "categoryName": "Bowls",
-    "thumbnail": "/images/bowls/walnut-and-maple-z-salad-bowls/img_3938.jpg",
+    "thumbnail": "/images/bowls/walnut-and-maple-z-salad-bowls/thumbnail.jpg",
     "images": [
       "/images/bowls/walnut-and-maple-z-salad-bowls/img_3938.jpg",
       "/images/bowls/walnut-and-maple-z-salad-bowls/img_3939.jpg",
       "/images/bowls/walnut-and-maple-z-salad-bowls/img_3945.jpg",
       "/images/bowls/walnut-and-maple-z-salad-bowls/img_3946.jpg",
-      "/images/bowls/walnut-and-maple-z-salad-bowls/img_3948.jpg",
-      "/images/bowls/walnut-and-maple-z-salad-bowls/img_3949.jpg"
+      "/images/bowls/walnut-and-maple-z-salad-bowls/img_3949.jpg",
+      "/images/bowls/walnut-and-maple-z-salad-bowls/thumbnail.jpg"
     ],
     "description": "Handcrafted walnut and maple z salad bowls from the Bowls collection.",
     "date": "2026-01"
@@ -792,13 +792,13 @@
     "title": "Mahoganey Stool",
     "category": "furniture",
     "categoryName": "Furniture",
-    "thumbnail": "/images/furniture/mahoganey-stool/img_3408.jpg",
+    "thumbnail": "/images/furniture/mahoganey-stool/thumbnail.jpg",
     "images": [
       "/images/furniture/mahoganey-stool/img_3408.jpg",
       "/images/furniture/mahoganey-stool/img_3518.jpg",
-      "/images/furniture/mahoganey-stool/img_3519.jpg",
       "/images/furniture/mahoganey-stool/img_3520.jpg",
-      "/images/furniture/mahoganey-stool/img_3521.jpg"
+      "/images/furniture/mahoganey-stool/img_3521.jpg",
+      "/images/furniture/mahoganey-stool/thumbnail.jpg"
     ],
     "description": "Handcrafted mahoganey stool from the Furniture collection.",
     "date": "2026-01"
@@ -1244,13 +1244,13 @@
     "title": "Mahogany Hot Dog ",
     "category": "miscellaneous",
     "categoryName": "Miscellaneous",
-    "thumbnail": "/images/miscellaneous/mahogany-hot-dog/img_5029.jpg",
+    "thumbnail": "/images/miscellaneous/mahogany-hot-dog/thumbnail.jpg",
     "images": [
       "/images/miscellaneous/mahogany-hot-dog/img_5029.jpg",
       "/images/miscellaneous/mahogany-hot-dog/img_5030.jpg",
       "/images/miscellaneous/mahogany-hot-dog/img_5031.jpg",
-      "/images/miscellaneous/mahogany-hot-dog/img_5032.jpg",
-      "/images/miscellaneous/mahogany-hot-dog/img_5033.jpg"
+      "/images/miscellaneous/mahogany-hot-dog/img_5033.jpg",
+      "/images/miscellaneous/mahogany-hot-dog/thumbnail.jpg"
     ],
     "description": "Handcrafted mahogany hot dog  from the Miscellaneous collection.",
     "date": "2026-01"
@@ -1265,7 +1265,10 @@
       "/images/miscellaneous/morpheus-masks/img_5600.jpg",
       "/images/miscellaneous/morpheus-masks/img_5601.jpg",
       "/images/miscellaneous/morpheus-masks/img_5613.jpg",
-      "/images/miscellaneous/morpheus-masks/img_5634.jpg"
+      "/images/miscellaneous/morpheus-masks/img_5634.jpg",
+      "/images/miscellaneous/morpheus-masks/img_5639.jpg",
+      "/images/miscellaneous/morpheus-masks/img_5641.jpg",
+      "/images/miscellaneous/morpheus-masks/img_5642.jpg"
     ],
     "description": "Handcrafted morpheus masks from the Miscellaneous collection.",
     "date": "2026-01"
